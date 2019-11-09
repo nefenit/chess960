@@ -1,7 +1,7 @@
 #ifndef __CHESS960_H__
 #define __CHESS960_H__
 
-#define POSITION_SIZE    9          /* includes '\0' terminator */
+#define POSITION_SIZE 9 /* includes '\0' terminator */
 
 typedef enum {
 	PIECE_KING    = 'K',
@@ -25,7 +25,7 @@ static const char position_unknown[] = {
 	'\0'
 };
 
-static const piece_t kings_table[60][6]    = {
+static const piece_t kings_table[60][6] = {
 	{
 		PIECE_QUEEN,  
 		PIECE_KNIGHT, 
