@@ -80,25 +80,28 @@ static char* scharnagls_two_table_representation(uint16_t n) {
 	return sp;
 }
 
-static void print_fen(int n) {
+static char* get_fen(uint16_t n) {
+	static char fen[] = 
+		"--------/--------/8/8/8/8/--------/-------- w KQkq - 0 1";
+	piece_t pawn_lower = tolower(PIECE_PAWN);
+	piece_t pawn_upper = toupper(PIECE_PAWN);
 	int i;
-	char* sp = scharnagls_two_table_representation(n);
-	piece_t pawn;
 
-	for(i = 0; i < POSITION_SIZE; ++i)
-		putchar(tolower(sp[i]));
-	putchar('/');
-	pawn = tolower(PIECE_PAWN);
-	for(i = 0; i < 8; ++i)
-		putchar(pawn);
-	printf("/8/8/8/8/");
-	pawn = toupper(PIECE_PAWN);
-	for(i = 0; i < 8; ++i)
-		putchar(pawn);
-	putchar('/');
-	for(i = 0; i < POSITION_SIZE; ++i)
-		putchar(toupper(sp[i]));
-	puts(" w KQkq - 0 1");
+	strncpy(fen,      scharnagls_two_table_representation(n), 8);
+	strncpy(fen + 35, scharnagls_two_table_representation(n), 8);
+
+	for(i = 0; i < 8; ++i) {
+		 fen      [i] = tolower(fen[i]);
+		(fen +  9)[i] = pawn_lower;	
+		(fen + 26)[i] = pawn_upper;
+		(fen + 35)[i] = toupper((fen+35)[i]);
+	}
+
+	return fen;
+}
+
+static void print_pgn(uint16_t n) {
+	printf("[FEN \"%s\"]\n[Setup \"1\"]\n[Variant \"Chess960\"]\n", get_fen(n));
 }
 
 static void test(void) {
@@ -119,8 +122,9 @@ static void test(void) {
 }
 
 int main(int argc, char *argv[]) {
+	puts(get_fen(518));
 	/* test(); */
-	puts(scharnagls_direct_derivation(518)); 
+	/* puts(scharnagls_direct_derivation(518)); */ 
 	/* print_fen(518); */
 	return 0;
 }
